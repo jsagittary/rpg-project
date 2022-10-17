@@ -1,0 +1,101 @@
+
+<assembly
+	xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+	<id></id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<dependencySets>
+		<dependencySet>
+			<!-- 不使用项目的artifact，第三方jar不要解压，打包进zip文件的lib目录 -->
+			<useProjectArtifact>false</useProjectArtifact>
+			<outputDirectory>lib</outputDirectory>
+			<unpack>false</unpack>
+			<excludes>
+				<exclude>*:rpg-battle-server:*</exclude>
+				<exclude>*:rpg-db-framework:*</exclude>
+				<exclude>*:rpg-game-client:*</exclude>
+				<exclude>*:rpg-game-common:*</exclude>
+				<exclude>*:rpg-protocol:*</exclude>
+				<exclude>*:rpg-game-server:*</exclude>
+				<exclude>*:rpg-net-framework:*</exclude>
+				<exclude>*:rpg-recharge-server:*</exclude>
+				<exclude>*:rpg-redis-framework:*</exclude>
+				<exclude>*:rpg-uc-server:*</exclude>
+				<exclude>*:rpg-util:*</exclude>
+				<exclude>*:maven-archiver:*</exclude>
+				<exclude>*:maven-artifact:*</exclude>
+				<exclude>*:maven-artifact-manager:*</exclude>
+				<exclude>*:maven-assembly-plugin:*</exclude>
+				<exclude>*:maven-core:*</exclude>
+				<exclude>*:maven-error-diagnostics:*</exclude>
+				<exclude>*:maven-model:*</exclude>
+				<exclude>*:maven-monitor:*</exclude>
+				<exclude>*:maven-plugin-api:*</exclude>
+				<exclude>*:maven-plugin-descriptor:*</exclude>
+				<exclude>*:maven-plugin-parameter-documenter:*</exclude>
+				<exclude>*:maven-profile:*</exclude>
+				<exclude>*:maven-project:*</exclude>
+				<exclude>*:maven-reporting-api:*</exclude>
+				<exclude>*:maven-repository-metadata:*</exclude>
+				<exclude>*:maven-settings:*</exclude>
+				<exclude>*:log4j-core:*</exclude>
+				<exclude>*:log4j-api:*</exclude>
+				<exclude>*:log4j-*:*</exclude>
+				<exclude>*:log4j-*:*</exclude>
+				<exclude>*:quartz-1.5.2:*</exclude>
+			</excludes>
+		</dependencySet>
+		<dependencySet>
+			<!-- 不使用项目的artifact，第三方jar不要解压，打包进zip文件的lib目录 -->
+			<useProjectArtifact>false</useProjectArtifact>
+			<outputDirectory>framework</outputDirectory>
+			<unpack>false</unpack>
+			<includes>
+				<include>*:rpg-battle-server:*</include>
+				<include>*:rpg-db-framework:*</include>
+				<include>*:rpg-game-client:*</include>
+				<include>*:rpg-game-common:*</include>
+				<include>*:rpg-protocol:*</include>
+				<include>*:rpg-game-server:*</include>
+				<include>*:rpg-net-framework:*</include>
+				<include>*:rpg-recharge-server:*</include>
+				<include>*:rpg-redis-framework:*</include>
+				<include>*:rpg-uc-server:*</include>
+				<include>*:rpg-util:*</include>
+			</includes>
+		</dependencySet>
+	</dependencySets>
+	<fileSets>
+		<fileSet>
+			<directory>${project.basedir}/src/main/resources</directory>
+			<!-- 过滤 -->
+			<outputDirectory>config</outputDirectory>
+			<includes>
+				<include>*.xml</include>
+				<include>*.properties</include>
+			</includes>
+			<excludes>
+				<exclude>zip.xml</exclude>
+			</excludes>
+		</fileSet>
+		<fileSet>
+			<directory>${project.basedir}/src/main/resources</directory>
+			<!-- 过滤 -->
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include></include>
+			</includes>
+		</fileSet>
+		<!-- 把项目自己编译出来的jar文件，打包进zip文件的根目录 -->
+		<fileSet>
+			<directory>${project.build.directory}</directory>
+			<outputDirectory>framework</outputDirectory>
+			<includes>
+				<include>*.jar</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+</assembly>  

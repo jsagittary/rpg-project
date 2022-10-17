@@ -1,0 +1,325 @@
+[language:java,package:com.dykj.rpg.protocol.battle,import:com.dykj.rpg.net.protocol.*]
+
+//进入战斗服请求
+struct LoginBattleServerRq{
+    i32 userId ;
+}
+
+//进入战斗服返回信息
+struct LoginBattleServerRs{
+    bool result; //登录结果，成功返回true
+    i32 misId; //关卡ID
+    byte mapIndex; //当前玩家角色所在的地图编号
+    list<BattleMapInfo> mapInfos; //地图信息
+    list<PlayerSkillInfo> skillInfos; //玩家角色技能列表
+    list<BattleAiInfo> aiInfos; //技巧列表
+    list<BattlePotionInfo> potionInfos; //玩家药水列表
+    byte battleType; //战斗类型 1=普通关卡（boss通关），7=守护基地
+    i32 battleTime; //关卡最大时长
+    i32 totalRounds; //怪物总波数
+    list<SuccessConditionInfo> conditions; //通关条件
+    i32 soulId; //灵魂之影id 为 0表示没有装载灵魂之影
+}
+
+//客户端发送开始游戏请求
+struct StartRunBattleRq{
+}
+
+//客户端发送退出游戏请求，服务器战斗继续
+struct ExitBattleRq{
+}
+
+//客户端发送结束游戏请求，服务器战斗结束
+struct StopBattleRq{
+}
+
+//服务器返回战斗结束结果
+struct StopBattleRs{
+    bool result; //true=退出成功
+}
+
+//关卡通关条件信息
+struct SuccessConditionInfo{
+    byte conditionType; //条件类型 对应 excel表 mis_condition 中的 condition_type字段
+    list<i32> conditionParams; //条件参数 对应 excel表 mis_condition 中的 condition_name
+    bool result; //完成情况
+    list<i32> progress; //进度数据 进度类型的通关条件（如击杀100个怪）此数据有效，第一个数据为进度值，第二个数据为任务总值
+}
+
+//客户端发送退出游戏请求,返回当前累积的掉落数据
+struct CurrentTotalLootInfo{
+    list<ItemRs> lootInfos;
+}
+
+//客户端请求的错误信息
+struct BattleErrorMessage{
+    i32 errorCode; //错误码 0=成功，其他值为失败
+    i32 handlerId; // 1=开始游戏的请求,2=释放技能请求
+    string errMsg; //错误信息
+}
+
+//获取当前战场的所有角色信息
+struct BattleRoleBasicInfoRq{
+}
+
+//返回当前战场的所有角色信息
+struct BattleRoleBasicInfoRs{
+    list<BattleRoleBasic> roleBasics; //游戏角色信息
+}
+
+//释放技能请求
+struct ReleaseSkillRq{
+    i32 skillId; //技能ID
+    i32 frameNum; //技能释放时运行帧数
+    BattlePosition position; //技能释放的地块序号，地点，方向
+}
+
+//使用药水请求
+struct BattleUsePotionRq{
+    i32 potionId; //使用的药水ID
+}
+
+//战斗结束结果返回
+struct BattleFinishResultRs{
+    bool result; //战斗结果 false=失败，true=成功
+    list<SuccessConditionInfo> conditions; //通关条件
+}
+
+//地图信息
+struct BattleMapInfo{
+    i32 id; //地图块id
+    byte index; //地图块的序列号，从0开始
+    byte exit; //地图块出口 1=上， 2=左， 3=下， 4=右
+    list<MapMonsterInfo> monsterInfos; //地图怪物信息
+}
+
+//地块怪物概况
+struct MapMonsterInfo{
+    i32 monsterId; //怪物ID
+    i32 monsterNum; //怪物数量
+}
+
+//玩家初始技能信息，使用技能成功后会收到此信息
+struct PlayerSkillInfo{
+    i32 id; //技能ID
+    byte seat; //技能位置 1=核心槽 2以后为技能相应位置
+    i32 cdTime; //技能冷却时间 单位为毫秒
+}
+
+//玩家初始战斗药水信息，使用药水成功后会收到此信息
+struct BattlePotionInfo{
+    i32 potionId; //药水ID
+    i32 num; //药水数量
+    i32 cdTime; //使用cd 单位为毫秒
+}
+
+//当前游戏角色信息，当客户端接收到此信息说明有新的角色进入了战场（怪物生成，队友加入等）
+struct BattleRoleBasic{
+    i32 id; //角色在地图中分配的唯一id
+    byte type; //角色类型 1=玩家，2=小怪，3=boss,4=npc
+    i32 roleId; //角色模型的id
+    i32 level; //角色等级
+    i32 maxBlood; //角色最大血量
+    i32 maxSoulEnergy; //角色最大魂能量值
+    i32 skillSourceType; //角色技能资源类型
+    i32 maxSkillSourceNum; //角色最大技能资源值
+}
+
+//角色地点信息
+struct BattlePosition{
+    byte mapIndex; //地图块的序列号
+    i32 posX; //x轴坐标*100,客户端使用时需要除以100
+    i32 posZ; //z轴坐标*100,客户端使用时需要除以100
+    i16 direction; //方向角度(0~360)
+    byte moveType; //角色移动方式 当BattleRoleInfo中action=2时有用 1=跑步，2=冲刺
+}
+
+//角色，怪物，boss等的战斗信息
+struct BattleRoleInfo{
+    i32 id; //角色在地图中分配的唯一id
+    byte anim; //角色动作 0=等待，1=出生，2=移动（跑，冲，退），3=死亡，4=释放技能，5=受击，6=硬直
+    i32 maxBlood; //血量上限
+    i32 blood; //血量
+    BattlePosition position; //anim=3(死亡)时，position里的direction为击飞方向，direction=-1为沿用上一帧怪物方向原地倒下
+    i32 skillId; //释放的技能ID anim=4时此值有效
+    i32 skillTime; //施法时间，单位ms anim=4时此值有效
+    bool show; //false=隐藏，true=显示
+    i32 targetId; //角色锁定的攻击目标的id，对应此协议的id，0=没有目标
+    i32 soulEnergy; //灵魂之影能量值
+    i32 skillSource; //技能资源值
+}
+
+//技能效果
+struct BattleSkillEffectInfo{
+    i32 effectId; //效果ID,用于客户端寻找特效资源
+    i32 modelId; //效果挂载对象 （modelId与effectPos只会有一个进行赋值）
+    BattlePosition effectPos; //效果的位置 （modelId与effectPos只会有一个进行赋值）
+}
+
+//技能载体
+struct BattleSkillCarrierInfo{
+    i32 carrierId; //载体ID,用于客户端寻找特效资源
+    i32 modelId; //载体在地图中的编号，用于区分所有载体
+    byte carrierType; //载体类型 1=目标子弹(跟踪)，2=地点子弹，3=方向子弹，4=目标位移(跟踪)，5=地点位移，6=方向位移，7=地点魔法，8=地点瞬移，9=跟随
+    byte state; //1=出生，2=消失
+    bool showDieEffect; //false=不播放消失特效 true=播放消失特效 (state=2时有效)
+    i32 mountModelId; //载体挂载对象 (carrierType=4,5,6时,挂载对象跟随载体的位置;carrierType=9时,载体跟随挂载对象的位置)
+    BattlePosition effectPos; //载体的位置 (carrierType=9时，effectPos为其偏移量)
+    BattlePosition targetPos; //载体的目标位置 carrierType=2,5时有值,用于做抛物线
+    i32 targetModelId; //载体的目标对象 carrierType=1,4时有值,用于做跟踪
+    byte moveLocus; //载体移动轨迹 1=直线平飞，2=抛物线
+    i32 speed; //载体速度(单位cm/s)
+    i32 distance; //载体最大飞行距离(单位cm)
+    i32 moveTime; //载体最大运行时间(单位ms)
+}
+
+//状态同步的游戏角色基本数据，如果当前战场中的角色没有获取到实时坐标信息，客户端可以当其为死亡进行处理
+struct BattleRoleSyncData{
+    i32 frameNum; //当场战斗当前服务器端的总运行帧数
+    list<BattleRoleInfo> roleInfos; //玩家，怪物，boss等的游戏数据
+}
+
+//状态同步的效果数据
+struct BattleEffectSyncData{
+    i32 frameNum; //当场战斗当前服务器端的总运行帧数
+    list<BattleSkillEffectInfo> skillEffects;
+}
+
+//状态同步的载体数据
+struct BattleCarrierSyncData{
+    i32 frameNum; //当场战斗当前服务器端的总运行帧数
+    list<BattleSkillCarrierInfo> skillCarriers;
+}
+
+//掉落的物品详细信息
+struct LootDetailInfo{
+    byte type; // 1=道具物品，2=小物件
+    i32 detailType; //1 = 装备,2 = 技能书,3 = 宝石,4 = 材料,5 = 碎片,6 = 消耗品, 7 = 货币,8 = 经验
+    i32 detailId; //type=1时为道具ID，type=2时为小物件ID
+    i32 num; //物品数量
+    i32 miniObjId; //小物件ID type=2时此值有效
+}
+
+//角色的掉落信息
+struct BattleRoleLootInfo{
+    BattlePosition lootPos; //物品掉落地点
+    list<LootDetailInfo> lootDetails;
+}
+
+//状态同步掉落信息
+struct BattleLootSyncData{
+    i32 frameNum; //当场战斗当前服务器端的总运行帧数
+    list<BattleRoleLootInfo> roleLoots;
+}
+
+//角色被击信息
+struct BattleRoleHitInfo{
+    i32 modelId;
+    i32 beHidId; //被击中时的效果ID
+    byte hurtType; //被击伤害类型 1= 普通，2 = 闪避，3 = 暴击，4 = 格挡，5 = 治疗，6 = 精通伤害
+    i32 changeBlood; //血量改变 正数加血，负数减血
+    byte state; //0=存活，1=死亡
+    i32 carrierId; //死亡时受击的载体ID
+    i16 direction; //死亡方向
+}
+
+//状态同步角色被击信息
+struct BattleRoleHitSyncData{
+    i32 frameNum; //当场战斗当前服务器端的总运行帧数
+    list<BattleRoleHitInfo> hitInfos;
+}
+
+//角色技能资源信息
+struct BattleSkillSourceInfo{
+    i32 sourceType; //技能资源类型
+    i32 sourceNum; //技能资源值
+}
+
+//状态同步角色技能资源信息
+struct BattleSkillSourceSyncData{
+    i32 frameNum; //当场战斗当前服务器端的总运行帧数
+    list<BattleSkillSourceInfo> sourceInfos;
+}
+
+//战斗日志基本属性值
+struct RoleBasicAttributeLog{
+    i16 attributeId; //属性Id
+    byte attributeType; //属性类型
+    i32 num; //率值*10000,其他为正常值
+}
+
+//战斗数据日志
+struct BattleHitLogData{
+    i32 frameNum; //当场战斗当前服务器端的总运行帧数
+    i32 releaseModelId; //施法者modelId
+    list<RoleBasicAttributeLog> releaseAtrributes; //施法者属性列表
+    i32 targetModelId; //目标modelId
+    list<RoleBasicAttributeLog> targetAtrributes; //目标属性列表
+    i32 skillId; //技能ID
+    byte elementType; //技能元素类型
+    bool shanbi; //true=闪避成功
+    bool baoji; //true=暴击成功
+    bool gedang; //true=格挡成功
+    bool zhiliao; //true=治疗成功
+    i32 hurtNum; //伤害(治疗)数值
+    string calculationProgress; //计算过程
+    i32 targetCurBlood; //受到伤害后的目标剩余血量
+    byte skillSourceType; //施法者消耗的技能资源类型
+    i32 skillSourceNum; //施法者消耗的技能资源数量
+    i32 releaseCurskillSourceNum; //施法者剩余的技能资源数量
+}
+
+//技能buff
+struct BattleSkillBuffInfo{
+    i32 stateId; //buff的ID
+    i32 guid; //buff在战斗中的唯一ID
+    i32 superpositionNum; //叠加层数
+    i32 durationTime; //剩余的持续时间
+    byte state; //1= 出生，2=消失
+}
+
+//对象的技能buff集合
+struct BattleRoleSkillBuff{
+    i32 modelId; //角色的modelId
+    list<BattleSkillBuffInfo> buffInfos; //buff集合
+}
+
+//状态同步的buff数据
+struct BattleBuffSyncData{
+    i32 frameNum; //当场战斗当前服务器端的总运行帧数
+    list<BattleRoleSkillBuff> skillBuffs; //buff集合
+}
+
+//一波怪物出生的警告
+struct BattleNpcRoundWarning{
+    i32 npcRound; //怪物出生轮次
+}
+
+
+//灵魂之影释放技能
+struct SoulRoleInfo{
+    i32 frameNum; //当场战斗当前服务器端的总运行帧数
+    i32 modelId ; //主角id
+    BattlePosition soulPos;//灵魂之影出现的位置
+    i32 skillId; //释放的技能ID
+    i32 skillTime; //施法时间(单位ms)
+}
+
+//灵魂之影出现时的信息
+struct SoulRoleBorn{
+    i32 frameNum; //当场战斗当前服务器端的总运行帧数
+    i32 modelId ; //主角id
+    BattlePosition soulPos;//灵魂之影出现的位置
+}
+
+//技巧信息
+struct BattleAiInfo{
+    i32 aiId; //技巧ID
+    i32 cdTime; //cd时间(单位ms)
+}
+
+//状态同步的技巧数据(当有技巧释放时服务器返回)
+struct BattleAiSyncData{
+    i32 frameNum; //当场战斗当前服务器端的总运行帧数
+    list<BattleAiInfo> aiInfos; //技巧集合
+}

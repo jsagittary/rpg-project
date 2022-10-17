@@ -1,0 +1,13 @@
+[language:java,package:com.dykj.rpg.protocol.test,import:com.dykj.rpg.net.protocol.*]
+
+//测试请求
+struct TestRequest{
+}
+//测试响应1
+struct TestResponse1{
+    i64 time; //时间戳
+}
+//测试响应2
+struct TestResponse2{
+    list<byte> data; //响应数据
+}

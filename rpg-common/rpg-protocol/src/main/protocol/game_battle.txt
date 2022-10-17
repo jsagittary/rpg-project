@@ -1,0 +1,26 @@
+[language:java,package:com.dykj.rpg.protocol.gameBattle,import:com.dykj.rpg.net.protocol.*]
+
+
+//开始战斗请求
+struct StartBattleRq{
+    i32 battleType;//战斗类型 1为通关类，2为BOSS类，等等
+}
+
+//开始战斗回复
+struct StartBattleRs{
+     string addr; //战斗服ip
+     i32 port; //战斗服端口
+     byte battleType; //战斗类型
+     i32 battleId; //战场ID，客户端与战斗服使用
+}
+
+
+struct BattleResultRs{
+    list<ItemRs> award; //关卡结算奖励
+    list<ItemRs> randomAward; //战斗服的随机奖励
+    i32  battleType;
+    i64  battleCdEndTime;//挑战boss关卡cd结束时间
+    bool result; //false=战斗失败，true=战斗胜利
+    i32  openMissionId;//解锁哪个关卡
+    list<SuccessConditionInfo> conditions; //通关条件
+}

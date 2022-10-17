@@ -1,0 +1,117 @@
+[language:java,package:com.dykj.rpg.protocol.equip,import:com.dykj.rpg.net.protocol.*]
+
+//装备的详细信息
+struct EquipRs
+{
+    list<EntryRs> entries; //装备的随机词条 entryIndex index =-1 为主属性
+    i32 equipPos; //-1表示未穿戴，1~10为装备栏位置
+    i32 equipScore ; //装备基础评分
+    i32 equipTotalScore;//装备总评分
+    i32 equipLock;//装备上锁(1-已解锁 2-已上锁)
+}
+
+struct EntryRs
+{
+    i32 entryEffectId; // eq_entry_effect 的id，客户端根据这个去读取显示字符串
+    i32 position; //词条的唯一表示,依据position在装备显示面板从上到下依次排序
+    list<EntryUnitRs> entryUnitRs; //词条的详细信息
+    i32 isLock; //当前词条是否上锁
+    i32 isNecessary; //是否是必出词条(0.不是 1.是)
+}
+
+
+struct EntryUnitRs
+{
+    i32 type ; //1 属性,2技能
+    i32 id ; // 属性id,技能id
+    i32 typeId; //为属性的子类型  为技能的时候去查 skill_attr_basic影响的详细信息（确定影响的是哪个字段）
+    i32 pram; //1值 2 增比  3 减比
+    i32 value ; // value   0,显示这个为entryUnitRs.length-1(去)
+    i32 entryValueRangeId ; //值域id,0的话表示没有值域,客户端依据这个id 去value_rang 找值域以及value缩放倍数
+}
+
+
+struct EquipUpRq
+{
+   i64 instId;//装备的实例id
+   i32 equipPos;//穿戴的位置
+}
+
+
+struct EquipUpRs
+{
+    ItemRs upItem;//穿上的装备信息
+    ItemRs downItem; //卸下的装备信息
+}
+
+
+struct EquipDownRq
+{
+   i32 equipPos;//卸载哪个位置的装备0~9
+}
+
+
+struct EquipDownRs
+{
+    ItemRs item;//卸下的装备信息
+}
+
+
+struct EquipPosUpRq{
+    i32 pos ; //装备栏位置
+}
+
+struct EquipPosUpRs{
+    i32 pos ; //装备栏位置
+    i32 posLv;//装备栏等级
+}
+
+struct EquipPosInfoRs{
+    list<EquipPosUpRs> equipPosInfos; //装备栏强化位置信息
+}
+
+//词条上锁的协议
+struct EntryLockRq{
+    i64 instId;//服务器唯一id
+    i32 position; //词条的唯一表示,依据position在装备显示面板从上到下依次排序
+}
+
+struct EntryLockRs{
+   EntryRs entry;//词条的信息
+}
+
+//装备洗练协议
+struct EquipWashRq{
+    i64 instId;//服务器唯一id
+}
+
+struct EquipWashRs{
+   EquipRs equip;//洗练之后装备的信息
+}
+
+//移除装备洗练结果协议
+struct RemoveWashReulstRq{
+    i64 instId;//服务器唯一id
+}
+
+struct RemoveWashReulstRs{
+   EquipRs equip;//装备的信息
+}
+
+//替换装备洗练结果
+struct ReplaceWashReulstRq{
+    i64 instId;//服务器唯一id
+}
+
+struct ReplaceWashReulstRs{
+   EquipRs equip;//洗练之后装备的信息
+}
+
+//分解装备
+struct EquipDecomposeRq{
+    i64 instId;//服务器唯一id
+}
+
+struct EquipDecomposeRs{
+     bool status;//true-成功, false-失败
+}

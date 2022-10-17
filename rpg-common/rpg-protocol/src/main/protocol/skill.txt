@@ -1,0 +1,183 @@
+[language:java,package:com.dykj.rpg.protocol.skill,import:com.dykj.rpg.net.protocol.*]
+
+//技能的信息
+struct SkillRs
+{
+    i32 skillId; //技能id
+    i32 skillLevel; //技能等级
+    i32 skillExp; //技能经验
+    i32 skillStarLevel;//技能星级
+    i32 position; //技能装备的位置 1~8 为穿戴的技能, -1 为没穿戴的技能
+    i32 skillType;//1 - 普通技能, 2 - 魂技
+    i64 soulChangeTime;//魂技培养转化起始时间, 0表示未开始培养  -1 表示已经培养完成
+    i32 trainSoulPos;//训练灵魂之影时在界面的位置
+    list<RuneRs> runeList;//符文列表
+}
+
+struct PlayerSkillRs{
+    list<SkillRs> skills;
+}
+
+struct SkillUpRq
+{
+   i32 skillId;//技能id
+   i32 position;//穿戴的位置
+}
+
+
+struct SkillUpRs
+{
+    SkillRs upSkill;//穿上的技能信息
+    SkillRs downSkill; //卸下的技能信息
+}
+
+
+struct SkillDownRq
+{
+   i32 position;//卸载哪个位置的技能1~9
+}
+
+
+struct SkillDownRs
+{
+    SkillRs downSkill;//卸下的技能信息
+}
+
+//技能书使用后新生成的技能
+struct PlayerSkillNewRs
+{
+    SkillRs skill;
+}
+
+//技能升级消耗道具
+struct SkillUpgradeRq
+{
+    i32 itemId;//道具id
+    i32 itemNum;//道具数量
+}
+
+//技能升级消耗道具列表
+struct SkillUpgradeListRq
+{
+    i32 skillId;//技能id
+    list<SkillUpgradeRq> skillUpgrades;
+}
+
+//技能升级
+struct SkillUpgradeRs
+{
+    i32 skillId;//技能id
+    i32 skillLevel;//技能等级
+    bool status;//true-成功, false-失败
+}
+
+//GM指令技能等级修改
+struct SkillLevelListGmRs
+{
+    list<SkillRs> list;
+    bool status;//true-成功, false-失败
+}
+
+//GM指令获取玩家所有技能列表
+struct PlayerSkillListGmRs
+{
+    list<SkillRs> skills;
+}
+
+struct TrainSoulSkillRs{
+    i32 skillId;//技能id
+    i64 soulChangeTime; //灵魂之影技能培养的成功时间
+    i32 trainSoulPos;//位置
+}
+
+
+struct TrainSoulInfo{
+    i32 skillId;//技能id
+    i32 trainSoulPos;//位置
+}
+
+//开始培养魂技请求
+struct StartTrainSoulSkillRq{
+     list<TrainSoulInfo> infos ;//训练灵魂之影的信息
+
+}
+//开始培养魂技回复
+struct StartTrainSoulSkillRs{
+    list<TrainSoulSkillRs> trainSoulSkills; //灵魂之影技能培养的成功时间
+
+}
+
+//结束培养魂技请求
+struct EndTrainSoulSkillRq{
+     i32 skillId;//技能id
+}
+
+//结束培养魂技回复
+struct EndTrainSoulSkillRs{
+
+}
+
+
+//购买培养魂技请求
+struct BuyTrainSoulSkillRq{
+     i32 skillId;//技能id
+}
+
+//购买培养魂技回复
+struct BuyTrainSoulSkillRs{
+    i64 soulChangeTime; //灵魂之影技能培养的成功时间
+}
+
+
+//领取培养魂技请求
+struct AwardTrainSoulSkillRq{
+     i32 skillId;//技能id
+}
+
+//领取培养魂技回复
+struct AwardTrainSoulSkillRs{
+
+}
+
+//技能升星消耗道具
+struct SkillRisingStar
+{
+    i32 itemId;//道具id
+    i32 itemNum;//道具数量
+}
+
+//技能升星消耗道具列表
+struct SkillRisingStarListRq
+{
+    i32 skillId;//技能id
+    list<SkillRisingStar> skillRisingStar;
+}
+
+//技能升星
+struct SkillRisingStarRs
+{
+    i32 skillId;//技能id
+    i32 skillStarLevel;//技能星级
+    bool status;//true-成功, false-失败
+}
+
+
+
+struct UnlockSkillPosRq{
+     i32 skillPos;//技能栏id
+}
+
+struct UnlockSkillPosRs{
+}
+
+struct BuySkillPosRq{
+     i32 skillPos;//技能栏id
+}
+
+struct BuySkillPosRs{
+}
+
+struct SkillPosInfoRs{
+    list<i32> skillPosList;//解锁的技能栏位置
+}
+

@@ -1,0 +1,53 @@
+[language:java,package:com.dykj.rpg.protocol.rune,import:com.dykj.rpg.net.protocol.*]
+
+//符文
+struct RuneRs
+{
+   i32 runeId;//符文id
+   i32 runePos;//符文装配栏位
+}
+
+//符文装配
+struct RuneAssemblyRq
+{
+    i32 skillId;//技能id
+    i32 runeId;//符文id
+    i32 runePos;//符文装配栏位
+}
+
+//符文装配
+struct RuneAssemblyRs
+{
+   bool status;//true-成功, false-失败
+}
+
+//符文卸载
+struct RuneUninstallRq
+{
+    i32 skillId;//技能id
+    i32 runeId;//符文id
+}
+
+//符文卸载
+struct RuneUninstallRs
+{
+   bool status;//true-成功, false-失败
+}
+
+
+//符文替换
+struct RuneReplaceRq
+{
+    i32 skillId;//技能id
+    i32 sourceRuneId;//源符文id
+    i32 newRuneId;//替换后的符文id
+    i32 runePos;//符文装配栏位
+}
+
+//符文替换
+struct RuneReplaceRs
+{
+   bool status;//true-成功, false-失败
+}
+
+

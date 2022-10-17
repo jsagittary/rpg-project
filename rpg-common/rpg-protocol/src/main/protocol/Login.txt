@@ -1,0 +1,63 @@
+[language:java,package:com.dykj.rpg.protocol.login,import:com.dykj.rpg.net.protocol.*]
+
+//登录前玩家信息请求
+struct GetPlayerInfoRq{
+   i32 accountKey;
+}
+
+//登录前玩家信息回复
+struct GetPlayerInfoRs{
+    list<PlayerRs> players;
+    list<ItemRs> equips;// 选中角色的装备
+}
+
+
+//登录游戏请求
+struct LoginMsgRq{
+    i32 playerId; //玩家id
+}
+
+//登录游戏结果
+struct LoginMsgRs {
+   PlayerRs player ;//玩家信息
+}
+
+//踢玩家下线 ，收到该消息客户端直接弹框，断开连接
+struct OfflinePlayerRs{
+   i32 type ;// 1 您的账户在异地登录 ，2 服务器已维护
+}
+
+//玩家注册请求
+struct RegisterMsgRq{
+  i32 profession ;//职业
+  string  name ;//名字
+  i32  sex ;//性别
+}
+
+
+//玩家注册请求回复
+struct RegisterMsgRs{
+   PlayerRs player ;//玩家信息
+}
+
+struct ReconnectRq{
+   i32 playerId; //玩家id
+}
+
+struct ReconnectRs{
+   PlayerRs player ;//玩家信息
+}
+
+
+struct EnterGameSuccess{
+    i32 type; //1 登录 2 重连 3 注册
+}
+
+struct ChangePlayerRq{
+    i32 playerId; //角色id
+    i32 accountKey;//账号id
+}
+
+struct ChangePlayerRs{
+     list<ItemRs> equips;//装备列表
+}

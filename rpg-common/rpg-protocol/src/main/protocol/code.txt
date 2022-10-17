@@ -1,0 +1,17 @@
+test.txt 1 99
+common.txt 100 200
+player.txt 1001 1100
+Login.txt 1101 1200
+Item.txt 1201 1300
+equip.txt 1301 1400
+skill.txt 1401 1500
+mission.txt 1501 1600
+game_battle.txt 1601 1700
+task.txt 1701 1800
+card.txt 1801 1900
+ai.txt 1901 2000
+mail.txt 2001 2100
+soul.txt 2200 2300
+rune.txt 2301 2400
+game2battle.txt 8901 9000
+battle.txt 9001 9100

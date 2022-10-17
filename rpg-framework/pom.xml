@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>rpg-servers</artifactId>
+        <groupId>com.dykj.rpg</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>rpg-framework</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>rpg-util</module>
+        <module>rpg-net-framework</module>
+        <module>rpg-redis-framework</module>
+        <module>rpg-db-framework</module>
+    </modules>
+
+    <name>rpg-framework</name>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!--<org.springframework.version>5.2.9.RELEASE</org.springframework.version>-->
+        <org.springframework.version>5.0.6.RELEASE</org.springframework.version>
+        <game.version>1.0-SNAPSHOT</game.version>
+        <jetty.version>9.4.9.v20180320</jetty.version>
+        <release.version>1.0-RELEASE</release.version>
+    </properties>
+    <distributionManagement>
+        <repository>
+            <id>nexus-release</id>
+            <name>Packaging Release Repository</name>
+            <url>http://192.168.0.231:8081/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-snapshot</id>
+            <name>Packaging Snapshot Repository</name>
+            <url>http://192.168.0.231:8081/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+</project>

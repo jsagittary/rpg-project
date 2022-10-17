@@ -1,0 +1,40 @@
+[language:java,package:com.dykj.rpg.protocol.soul,import:com.dykj.rpg.net.protocol.*]
+
+//解锁灵魂之影皮肤请求
+struct UnlockSoulSkinRq{
+     i32 soulId; // 灵魂之影皮肤id
+}
+
+struct UnlockSoulSkinRs{
+}
+
+
+//购买灵魂之影皮肤请求
+struct BuySoulSkinRq{
+    i32 soulId; // 灵魂之影皮肤id
+}
+
+
+//购买灵魂之影皮肤请求回复
+struct BuySoulSkinRs{
+
+}
+
+//使用灵魂之影皮肤请求
+struct UseSoulSkinRq{
+    i32 soulId; // 灵魂之影皮肤id
+}
+
+
+struct UseSoulSkinRs{
+
+}
+
+struct SoulSkinRs{
+     i32 soulId; // 灵魂之影皮肤id
+     i32 use; //0 未穿戴，1穿戴
+}
+
+struct SoulSkinLoginRs{
+    list<SoulSkinRs> soulSkins;//所有解锁的灵魂之影信息
+}

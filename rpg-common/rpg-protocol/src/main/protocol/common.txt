@@ -1,0 +1,22 @@
+[language:java,package:com.dykj.rpg.protocol.common,import:com.dykj.rpg.net.protocol.*]
+
+struct ErrorMsg{
+   i32 errorCode ;   //错误码
+   i32 handlerId ;   //哪条协议产生的错误码
+   list<string> prams ; //参数集合
+}
+
+//心跳请求
+struct HeartBeatRq{
+}
+
+//心跳回复
+struct HeartBeatRs{
+  i64 systemTime ; //系统时间
+}
+
+//gm指令
+struct GmCommonRq
+{
+    string command;//gm指令
+}

@@ -1,0 +1,62 @@
+[language:java,package:com.dykj.rpg.protocol.ai,import:com.dykj.rpg.net.protocol.*]
+
+//雕纹的详细信息
+struct AiRs
+{
+    i32 itemId;//物品ID
+    i32 aiId;//雕纹ID
+    i32 position; //雕纹的位置 -1表示未穿戴 1~6 为穿戴的技能
+    i32 aiConditionParam;//行为参数
+    i32 aiActionParam;//动作参数
+}
+
+struct AiWearRq
+{
+   i32 itemId;//雕纹id
+   i32 pos;//穿戴的位置
+}
+
+
+struct AiWearRs
+{
+    ItemRs upItem;//穿上的雕纹信息
+    ItemRs downItem; //卸下的雕纹信息
+}
+
+
+struct AiOffRq
+{
+   i32 pos;//卸载哪个位置的雕纹1~6
+}
+
+
+struct AiOffRs{
+    ItemRs item;//卸下的雕纹信息
+}
+
+struct AiReplaceRq
+{
+   i32 pos1;//当前位置
+   i32 pos2;//目标位置
+}
+
+
+struct AiReplaceRs{
+    ItemRs item1;//移动的雕纹信息1
+    ItemRs item2;//移动的雕纹信息2
+}
+
+struct AiUpdateParamRq
+{
+   i32 itemId;//物品ID
+   i32 aiConditionParam;//行为参数
+   i32 aiActionParam;//动作参数
+}
+
+struct AiUpdateParamRs{
+    ItemRs item;//雕纹信息
+}
+
+
+
+

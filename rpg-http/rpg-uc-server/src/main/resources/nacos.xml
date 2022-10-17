@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:nacos="http://nacos.io/schema/nacos"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://nacos.io/schema/nacos
+       http://nacos.io/schema/nacos.xsd">
+    <nacos:annotation-driven/>
+    <nacos:global-properties server-addr="192.168.0.231:8848" namespace="ce0694ba-c52f-41fa-9147-72be3836254c"/>
+    <nacos:property-source data-id="uc.properties" group-id="UC"/>
+    <nacos:property-source data-id="common_test.properties" group-id="UC"/>
+    <nacos:property-source data-id="db.properties" group-id="UC"/>
+</beans>

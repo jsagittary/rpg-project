@@ -1,0 +1,71 @@
+[language:java,package:com.dykj.rpg.protocol.mission,import:com.dykj.rpg.net.protocol.*]
+
+//关卡消息体
+struct MissionRs{
+    i32 missionId;//关卡id
+    i64 handUpTime;//开始挂机的时间
+    i64 battleCdEndTime;//挑战boss关卡cd结束时间
+}
+
+
+//登录关卡推送
+struct MissionLoginRs{
+    MissionRs missionRs;
+}
+
+//挂机奖励界面请求
+struct HandUpAwardRq{
+
+}
+
+
+//挂机奖励界面回复
+struct HandUpAwardRs{
+    i64 handUpTime;//开始挂机的时间
+    list<ItemRs> awards;//挂机奖励
+}
+
+
+
+//领取挂机奖励请求
+struct GetHandUpAwardRq{
+
+}
+
+
+//领取挂机奖励回复
+struct GetHandUpAwardRs{
+    i64 handUpTime;//开始挂机的时间
+}
+
+
+
+
+//快速挂机界面请求
+struct QuickHandUpRq{
+
+
+}
+
+//快速挂机请求回复
+struct QuickHandUpRs{
+     i32 quickHangUpNum;//快速挂机的次数，为0的时候表示一次快速挂没有使用。客户端显示免费（第一次免费）
+     i64 quickHangUpTime;//快速挂机重置的时间搓，客户端做倒计时用
+}
+
+//领取快速挂机奖励请求
+struct GetQuickHandUpAwardRq{
+
+
+}
+
+//领取快速挂机奖励回复
+struct GetQuickHandUpAwardRs{
+     i32 quickHangUpNum;//快速挂机的次数，为0的时候表示一次快速挂没有使用。客户端显示免费（第一次免费）
+     i64 quickHangUpTime;//快速挂机重置的时间搓，客户端做倒计时用
+}
+
+
+
+
+

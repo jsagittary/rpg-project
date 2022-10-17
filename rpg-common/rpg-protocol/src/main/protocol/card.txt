@@ -1,0 +1,35 @@
+[language:java,package:com.dykj.rpg.protocol.card,import:com.dykj.rpg.net.protocol.*]
+
+//抽卡
+struct CardRs
+{
+    i32 cardId;//卡池id
+    i32 buttonId;//按钮id
+    i64 buttonCutoffTime;//按钮冷却截止时间
+    i32 buttonExtractNumber;//按钮抽取次数
+}
+
+//抽卡记录列表
+struct CardListRq
+{
+
+}
+
+//抽卡记录列表
+struct CardListRs
+{
+   list<CardRs> cardList;//抽卡记录列表
+}
+
+//抽卡
+struct CardRq
+{
+    i32 cardId;//卡池id
+    i32 buttonId;//按钮id
+}
+
+//抽卡记录列表
+struct UpdateCardRs
+{
+   CardRs card;
+}

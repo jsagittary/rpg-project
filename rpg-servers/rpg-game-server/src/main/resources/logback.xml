@@ -1,0 +1,205 @@
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <property name="AppName" value="Q10"/>
+    <contextName>${AppName}</contextName>
+
+    <appender name="FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <prudent>false</prudent>
+        <file>logs/work.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>bak/work/%d{yyyy-MM-dd-HH}.log</fileNamePattern>
+            <maxHistory>240</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSSS} [%thread] %-5level%logger{36}-[Line:%L]>%m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ERROR_FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/error.log</file>
+        <prudent>false</prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>bak/error/%d{yyyy-MM-dd-HH}.log
+            </fileNamePattern>
+            <maxHistory>240</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSSS} [%thread] %-5level%logger{36}-[Line:%L]>%m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSSS} [%thread] %-5level%logger{36}-[Line:%L]>%m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="profileAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/profile.log</file>
+        <prudent>false</prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>bak/profile/%d{yyyy-MM-dd-HH}.log
+            </fileNamePattern>
+            <maxHistory>240</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSSS} %-5level %logger{12}>%m%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <logger name="profile" level="DEBUG" additivity="false">
+        <appender-ref ref="profileAppender"/>
+    </logger>
+
+    <!-- 重连日志-->
+    <appender name="reconnectAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/reconnect.log</file>
+        <prudent>false</prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>data/reconnect/%d{yyyy-MM-dd-HH}.log
+            </fileNamePattern>
+            <maxHistory>90</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss},%m%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="reconnect" level="INFO" additivity="false">
+        <appender-ref ref="reconnectAppender"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+
+    <!-- 测试主从的日志-->
+    <appender name="dbAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/db.log</file>
+        <prudent>false</prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>data/db/%d{yyyy-MM-dd-HH}.log
+            </fileNamePattern>
+            <maxHistory>90</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss},%m%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="db" level="INFO" additivity="false">
+        <appender-ref ref="dbAppender"/>
+        <!--<appender-ref ref="CONSOLE" />-->
+    </logger>
+
+
+    <!-- 游戏类必须要打印的日志-->
+    <appender name="gameAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/game.log</file>
+        <prudent>false</prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>data/db/%d{yyyy-MM-dd-HH}.log
+            </fileNamePattern>
+            <maxHistory>90</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss},%m%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="game" level="INFO" additivity="false">
+        <appender-ref ref="gameAppender"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <!-- 角色登录日志文件 -->
+    <appender name="roleloginObtainAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/collection/role_login.log</file>
+        <prudent>false</prudent>
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>data/role_login/%d{yyyy-MM-dd-HH}.log</fileNamePattern>
+            <maxHistory>240</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss},%m%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="role_login" level="INFO" additivity="false">
+        <appender-ref ref="roleloginObtainAppender"/>
+    </logger>
+
+
+    <appender name="roleAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>DYLogs/role_log.log</file>
+        <prudent>false</prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>DYData/role/%d{yyyy-MM-dd-HH}.log
+            </fileNamePattern>
+            <maxHistory>240</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%m%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="ROLE" level="INFO" additivity="false">
+        <appender-ref ref="roleAppender"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+
+    <!-- 道具 -->
+    <appender name="itemAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>DYLogs/item_log.log</file>
+        <prudent>false</prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>DYData/item/%d{yyyy-MM-dd-HH}.log
+            </fileNamePattern>
+            <maxHistory>240</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%m%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="ITEM" level="INFO" additivity="false">
+        <appender-ref ref="itemAppender"/>
+    </logger>
+
+    <!-- 游戏行为 -->
+    <appender name="actionAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>DYLogs/action_log.log</file>
+        <prudent>false</prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>DYData/action/%d{yyyy-MM-dd-HH}.log
+            </fileNamePattern>
+            <maxHistory>240</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%m%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="ACTION" level="INFO" additivity="false">
+        <appender-ref ref="actionAppender"/>
+    </logger>
+
+    <logger name="org.springframework.jdbc.core" additivity="false" level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="ERROR_FILE"/>
+    </root>
+</configuration>

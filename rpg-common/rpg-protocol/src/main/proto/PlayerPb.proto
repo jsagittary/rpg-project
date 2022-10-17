@@ -1,0 +1,11 @@
+package com.dykj.rpg.protocol;
+
+option java_outer_classname = "PlayerPb";
+
+//玩家的基础信息
+message PlayerInfoPb{
+  required  int32 playerId = 1; //玩家id
+  required  string  name = 2;   //玩家名字
+  required  int32  sex = 3;  //玩家性别
+  required  int32  profession = 4; //玩家职业
+}

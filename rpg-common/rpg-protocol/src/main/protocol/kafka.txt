@@ -1,0 +1,7 @@
+[language:java,package:com.dykj.rpg.protocol.kafka,import:com.dykj.rpg.net.protocol.*]
+
+//kafka 注册topic
+struct RegisterServerRq{
+    string desc;
+}
+

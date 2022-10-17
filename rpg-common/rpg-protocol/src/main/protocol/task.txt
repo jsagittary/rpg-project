@@ -1,0 +1,100 @@
+[language:java,package:com.dykj.rpg.protocol.task,import:com.dykj.rpg.net.protocol.*]
+
+//任务
+struct TaskRs
+{
+   i32 taskId;//任务id
+   i32 taskType;//任务类型(1=主线 2=日常 3=周常)
+   i32 taskStatus;//任务状态(1-未完成 2-已完成)
+   i32 taskSchedule;//任务进度
+   i32 taskRewardStatus;//任务奖励领取状态(0-未领取, 1-已领取)
+   i32 protectorRewardStatus;//守护者奖励领取状态(0-未领取, 1-已领取)
+}
+
+//任务列表
+struct TaskListRq
+{
+}
+
+//任务列表
+struct TaskListRs
+{
+   list<TaskRs> taskList;//任务列表
+}
+
+//任务触发列表
+struct TaskTriggerListRs
+{
+   list<TaskRs> taskList;//任务列表
+}
+
+//更新任务列表
+struct UpdateTaskListRs
+{
+    list<TaskRs> taskList;//任务列表
+}
+
+//领取任务奖励
+struct ReceiveTaskRewardsRq
+{
+    i32 type;//领取类型(1-普通奖励, 2-守护者奖励, 3-一键领取所有奖励)
+    list<i32> taskIdList;//任务id列表
+}
+
+//领取任务奖励
+struct ReceiveTaskRewardsRs
+{
+    list<TaskRs> taskList;//任务列表
+}
+
+//更新活跃度
+struct UpdateActivityRs
+{
+    i32 activity;//活跃度
+    i32 activityType;//活跃度类型(1-日常 2-周常)
+}
+
+//领取活跃度奖励
+struct ReceiveActivityRewardsRq
+{
+    i32 id;//活跃度奖励宝箱id
+}
+
+//领取活跃度奖励
+struct ReceiveActivityRewardsRs
+{
+    i32 activityReceiveStatus;//活跃度奖励领取状态(0-未领取, 1-已领取)
+}
+
+//开通守护者奖励
+struct OpenProtectorRewardRq
+{
+
+}
+
+//开通守护者奖励
+struct OpenProtectorRewardRs
+{
+   i32 isProtector;//是否已开通守护者奖励(0-否 1-是)
+   i64 protectorRemainingTime;//守护者奖励剩余时长(单位:分)
+}
+
+//守护者奖励过期
+struct ProtectorRewardExpiredRq
+{
+
+}
+
+//守护者奖励过期
+struct ProtectorRewardExpiredRs
+{
+   bool status;//true-成功, false-失败
+}
+
+//任务刷新
+struct TaskRefreshListRs
+{
+   i32 taskType;//任务类型(1=主线 2=日常 3=周常)
+   list<TaskRs> taskList;//任务列表
+}
+

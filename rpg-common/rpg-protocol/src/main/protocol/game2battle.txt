@@ -1,0 +1,88 @@
+[language:java,package:com.dykj.rpg.protocol.game2battle,import:com.dykj.rpg.net.protocol.*]
+
+//角色修改的属性信息
+struct AttributeInfo{
+    i16 id;  //属性ID
+    byte attributeType; //属性类型
+    i32 num; //属性数值
+}
+
+//进入战斗所选的角色信息
+struct EnterBattleRoleInfo{
+    i32 roleId; //玩家角色ID
+    i32 roleLevel; //玩家角色等级
+    list<AttributeInfo> attributeInfos; //角色修改的属性信息
+
+}
+
+//进入战斗时携带的技能信息
+struct EnterBattleSkillInfo{
+    i32 skillId; //技能ID
+    i32 level; //技能等级
+    list<SkillAttribute> attributeInfos; //技能修改的属性信息
+    i32 skillPosition;//-1为被动  ,0~8 为主动技能的位置
+}
+
+struct SkillAttribute{
+    i32 tableKey; //skill_character_basic kill_character_carrier skill_character_effect skill_character_state表的主键
+    i32 skillAttrId; //skill_attr_basic 的id;
+    i32 prams; //修正参数
+    i32 value;//值
+}
+
+//请求进入战斗服
+struct PlayerEnterBattleRequest{
+    i32 playerId; //玩家ID
+    i32 sessionId; //玩家sessionId
+    byte battleType; //请求进入的战斗类型
+    i32 missionId; //关卡
+    EnterBattleRoleInfo roleInfo; //进入战斗所选的角色信息
+    list<EnterBattleSkillInfo> skillInfos; //角色携带的技能信息
+    list<ItemRs> items;//战斗药品
+    i32 soulId;//灵魂之影id
+    list<AiBattleRs> aiBattles;//技巧列表
+}
+
+//组队成功后由缓存服务器推送给战斗服务器
+struct PlayerEnterBattleRequestList{
+    list<PlayerEnterBattleRequest> requests;
+}
+
+//进入战斗服返回，此时只是返回进入组队结果
+struct PlayerEnterBattleResponse{
+    byte state; //0=失败，1=组队中，2=组队成功
+}
+
+//组队成功后战斗服主动推送进入战斗信息
+struct EnterBattleSuccessResponse{
+    string addr; //战斗服ip
+    i32 port; //战斗服端口
+    byte battleType; //战斗类型
+    i32 battleId; //战场ID，客户端与战斗服使用
+    list<i32> playerIds;//参与战斗该服的玩家
+    i32 missionId; //关卡id
+}
+
+//战斗结束后战斗服返回给游戏服战斗结算信息
+struct BattleFinishPersonalResultResponse{
+    bool result; //false=战斗失败，true=战斗胜利
+    i32 playerId;
+    list<ItemRs> items;//消耗品，数量传负数
+    list<ItemRs> awards;//战斗得到物品
+    list<SuccessConditionInfo> conditions; //通关条件
+}
+
+struct BattleFinishResultResponse{
+    i32 battleId;
+    list<BattleFinishPersonalResultResponse> results; //所有玩家的结算信息
+}
+
+//雕纹战斗服参数协议
+struct AiBattleRs
+{
+    i32 itemId;//物品ID
+    i32 aiId;//雕纹ID
+    i32 position; //雕纹的位置 -1表示未穿戴 1~6 为穿戴的技能
+    list<i32> aiConditionParam;//行为参数
+    list<i32> aiActionParam;//动作参数
+}

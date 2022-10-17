@@ -1,0 +1,74 @@
+[language:java,package:com.dykj.rpg.protocol.mail,import:com.dykj.rpg.net.protocol.*]
+
+//邮件
+struct MailRs
+{
+   i64 instId;//服务器唯一id
+   i32 mailId;//道具id
+   list<string> titleParam;//道具类型
+   list<string> contentParam;//道具数量
+   list<ItemRs> items;//附件奖励列表
+   i32 isAward; //是否有奖励 0.没有奖励 1.有奖励
+   i32 isRead; //是否已读取 0.未读 1.已读取
+   i32 isReceive; //是否领取奖励 0.没有领取 1.已领取
+   i64 createTime;//创建日期
+}
+
+//邮件列表
+struct PlayerMailRs
+{
+   list<MailRs> mails;//邮件列表
+}
+
+//读取邮件
+struct ReadMailRq
+{
+    i64 instId;//服务器唯一id
+}
+
+struct ReadMailRs
+{
+    MailRs mail;
+}
+
+//一键移除邮件
+struct RemoveAllMailRq
+{
+}
+
+struct RemoveAllMailRs
+{
+   list<MailRs> mails;//邮件列表
+}
+
+//移除单个邮件
+struct RemoveMailRq
+{
+    i64 instId;//服务器唯一id
+}
+
+struct RemoveMailRs
+{
+   MailRs mail;
+}
+
+//一键领取邮件奖励
+struct GetAllMailAwardRq
+{
+}
+
+struct GetAllMailAwardRs
+{
+   list<MailRs> mails;//邮件列表
+}
+
+//领取单个邮件奖励
+struct GetMailAwardRq
+{
+    i64 instId;//服务器唯一id
+}
+
+struct GetMailAwardRs
+{
+   MailRs mail;
+}

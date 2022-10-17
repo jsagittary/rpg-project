@@ -1,0 +1,72 @@
+[language:java,package:com.dykj.rpg.protocol.player,import:com.dykj.rpg.net.protocol.*]
+
+//玩家的基础信息
+struct PlayerRs{
+    i32 playerId ;//玩家id
+    string  name ;   //玩家名字
+    i32  profession ; //玩家职业
+    i32 choose;// 0未选中 1选中
+    i32 level; //玩家等级
+    i32 backCapacity;//背包容量
+    i32 vip; //vip等级
+    i32 exp;//经验
+}
+
+//玩家的附属信息
+struct PlayerAttachedRs
+{
+    i32 dailyActivity;//日活跃度
+    i32 weekActivity;//周活跃度
+    i32 isProtector;//是否已开通守护者(0-否 1-是)
+    i64 protectorRemainingTime;//守护者奖励剩余时长(单位:分)
+    i64 protectorLastTime;//守护者奖励截止时间
+    string activityRewardList;//活跃度奖励列表
+}
+
+
+//更改玩家名字请求
+struct ModifyNameRq{
+    string name; //玩家名字
+}
+
+//更改玩家名字回复
+struct ModifyNameRs{
+    string name; //玩家名字
+}
+
+//随机玩家名字请求
+struct RandomNameRq{
+}
+
+//随机玩家名字回复
+struct RandomNameRs{
+    string name; //随机玩家名字
+}
+
+
+struct DeletePlayerRq{
+     i32 playerId;
+}
+
+struct DeletePlayerRs{
+    i32 chosePlayerId;//当前选择的角色 0表示没有
+}
+
+//玩家信息变更
+struct UpdPlayerInfoRs
+{
+    i32 level;//玩家等级
+    i32 exp;//经验
+    i32 vipLv;//vip等级
+    i32 dailyActivity;//日活跃度
+    i32 weekActivity;//周活跃度
+    i64 protectorRemainingTime;//守护者奖励剩余时长(单位:分)
+    i64 protectorLastTime;//守护者奖励截止时间
+}
+
+//触发角色升级
+struct RoleUpgradeRs
+{
+    i32 level; //玩家等级
+    i32 exp;//经验
+}

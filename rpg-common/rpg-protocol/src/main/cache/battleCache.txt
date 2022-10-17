@@ -1,0 +1,59 @@
+[maincache:Battle,package:com.dykj.rpg.cache,import:com.dykj.rpg.net.protocol.*]
+
+//角色基本属性，修改次数比较少的数据
+struct RoleBasicModel{
+    byte type; //角色类型
+    i32 roleId; //角色模型的ID
+    i32 createFrameNum; //角色出生的帧数
+    i32 level; //角色等级
+    i32 radius; //模型角色大小*100（半径）
+    i32 height; //模型角色高度*100
+    i32 maxBlood; //角色最大血量
+    i32 walkSpeed; //每秒走动距离*100
+    i32 runSpeed; //每秒跑动距离*100
+    i32 jumpSpeed; //每秒跳跃距离*100
+    i32 maxAcceleration; //角色最大加速度*100
+}
+
+//角色战斗属性，修改次数中等的数据
+struct RoleBattleModel{
+    byte state; //角色状态
+    byte mapIndex; //角色所在地图序列号
+    i32 blood; //角色血量
+    byte moveType; //移动类型
+    byte targetType; //目标类型 0=没有目标 1=角色目标 2=坐标目标
+    i32 targetId; //角色目标ID
+    i32 targetPosX; //坐标目标x*100
+    i32 targetPosY; //坐标目标y*100
+    i32 targetPosZ; //坐标目标z*100
+}
+
+//角色位置属性，修改次数很多的数据
+struct RolePositionModel{
+    i32 posX; //角色坐标x*100
+    i32 posY; //角色坐标y*100
+    i32 posZ; //角色坐标z*100
+    i16 direction; //角色方向（0-360）
+}
+
+//战斗地图缓存结构体
+struct BattleMapModel{
+     i32 id; //地图块id
+     byte index; //地图块的序列号，从1开始
+     byte exit; //地图块出口 1=上， 2=左， 3=下， 4=右
+}
+
+//战斗缓存结构体
+struct BattleModel{
+    i32 frameNum;
+}
+
+//战斗缓存数据结构体
+struct Battle{
+    i32 battleId;
+    BattleModel battleModel;
+    list<BattleMapModel> battleMapModels;
+    list<RoleBasicModel> roleBasicModels;
+    list<RoleBattleModel> roleBattleModels;
+    list<RolePositionModel> rolePositionModels;
+}

@@ -1,0 +1,82 @@
+[language:java,package:com.dykj.rpg.protocol.item,import:com.dykj.rpg.net.protocol.*]
+
+//背包
+struct ItemRs
+{
+   i64 instId;//服务器唯一id
+   i32 itemId;//道具id
+   i32 itemType;//道具类型
+   i32 itemNum;//道具数量
+   EquipRs equip;//如果是装备,装备的详细信息
+   AiRs ai;//如果是雕纹,雕纹的详细信息
+   i64 expiration;//过期时间
+   i32 isLock;//0-不可上锁 1-已解锁 2-已上锁
+}
+
+//背包列表
+struct ItemListRs
+{
+   list<ItemRs> itemArr;//背包列表
+}
+
+//更新物品
+struct UpdateItemListRs
+{
+    i32 operation;//操作类型 1001-GM 1002-出售 1003-兑换 1004-分解 1005-使用 1006-丢弃 1007-挂机奖励 1008-挂机奖励 1009-关卡通关奖励 1010-战斗使用物品 1011-培养灵魂之影技能消耗 1012-培养装备栏等级消耗 1013-任务完成奖励 1014-守护者奖励 1015-活跃度奖励 1016-开通守护者 1017-抽卡奖励
+    i32 type;//0-无 1-弹窗
+    bool status;//true-成功 false-失败
+    list<ItemRs> itemArr;
+}
+
+// 出售/兑换/分解/使用/丢弃
+struct ItemUniversalRq
+{
+    i64 instId;//服务器唯一id
+    i32 itemId;//道具id
+    i32 itemNum;//道具数量
+}
+
+// 出售/兑换/分解/使用/丢弃
+struct ItemUniversalListRq
+{
+    list<ItemUniversalRq> itemUniversalArr;
+    i32 operation;//操作类型   1001-GM 1002-出售 1003-兑换 1004-分解 1005-使用 1006-丢弃
+}
+
+//扩展背包
+struct ItemExpandRq
+{
+}
+
+//扩展背包
+struct ItemExpandRs
+{
+    bool status;//true-成功, false-失败
+}
+
+//物品过期
+struct ItemExpiredRq
+{
+}
+
+//物品过期
+struct ItemExpiredItemRs
+{
+ bool status;//true-成功, false-失败
+}
+
+//物品上锁
+struct ItemLockRq
+{
+    i64 id;//根据type取对应id
+    i32 type;//1-装备唯一id 2-道具id
+    i32 isLock;//1-已解锁 2-已上锁
+}
+
+//物品上锁
+struct ItemLockRs
+{
+    i64 id;//根据type取对应id
+    i32 type;//1-装备唯一id 2-道具id
+    bool status;//true-成功, false-失败
+}

@@ -1,0 +1,42 @@
+package com.dykj.rpg.protocol;
+
+import "PlayerPb.proto";
+option java_outer_classname = "LoginPb";
+
+//code = 1001
+//登录游戏请求
+message LoginMsgRq{
+  required string accountId = 1;    //帐号id
+  required string validateCode = 2; //登录完成后获得的校验码 测试环境传"Let Me In"
+  required int32 serverId = 3;      //服务器唯一标识
+  required string channel = 4;      //渠道 无渠道传"NAN"WWW
+}
+
+//code = 1002
+//登录游戏结果
+message LoginMsgRs {
+  optional bool empty = 1; //是否没有任何已经创建好的角色，在没有任何角色需要客户端跳转到创建角色流程
+  optional bool isWhiteList = 2; //是否是白名单
+  optional PlayerInfoPb player = 3;//玩家信息
+}
+
+//code = 1003
+//踢玩家下线 ，收到该消息客户端直接弹框，断开连接
+message OfflinePlayerRs{
+  required  int32 type = 1;// 1 您的账户在异地登录 ，2 服务器已维护
+}
+
+//code = 1004
+//玩家注册请求
+message RegisterMsgRq{
+  required int32 profession = 1;//职业
+  required string  name = 2;//名字
+  required  int32  sex = 3;//性别
+}
+
+
+//code = 1005
+//玩家注册请求
+message RegisterMsgRs{
+  required PlayerInfoPb player = 3;//玩家信息
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	<context:property-placeholder location="classpath:redis.properties" />
+	<bean class="redis.clients.jedis.JedisPoolConfig" id="poolConfig">
+		<property name="maxIdle" value="${redis.maxIdle}" />
+		<property name="maxWaitMillis" value="${redis.maxWait}" />
+		<property name="testOnBorrow" value="${redis.testOnBorrow}" />
+		<property name="maxTotal" value="${redis.maxTotal}" />
+	</bean>
+	<bean id="connectionFactory"
+		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+		p:host-name="${redis.host}" p:password="${redis.pass}"
+		p:pool-config-ref="poolConfig" p:port="${redis.port}"></bean>
+	<bean id="stringRedisSerializer"
+		class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+		<!-- <property name="enableDefaultSerializer" value="false"/> -->
+		<property name="keySerializer" ref="stringRedisSerializer" />
+		<property name="hashKeySerializer" ref="stringRedisSerializer" />
+		<property name="hashValueSerializer" ref="stringRedisSerializer"/>
+		<property name="defaultSerializer" ref="stringRedisSerializer"/>
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="enableTransactionSupport" value="false" />
+	</bean>
+
+	<!-- 将上方配置的redisTemplate加入redisPoolMap,记住Map的Key,代码中需要通过这个Key进行操作不同redis -->
+	<bean id="redisPoolMap" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key="DEFAULT_REDIS_DATASOURCE" value-ref="redisTemplate" />
+			</map>
+		</constructor-arg>
+	</bean>
+</beans>
